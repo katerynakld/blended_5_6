@@ -1,8 +1,27 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://dummyjson.com/products'
+import { API_BASE_URL, API_ENDPOINTS } from './constants';
 
-export async function fetchProducts(page = 1, limit = 12) {
-    const response = await axios.get(`${BASE_URL}?page=${page}&limit=${limit}`);
-    return response.data;
+axios.defaults.baseURL = API_BASE_URL;
+
+export async function getCategories() {
+  const { data } = await axios.get(API_ENDPOINTS.CATEGORIES);
+  return data;
 }
+
+export async function getProducts(page) {
+  const { data } = await axios.get(`${API_ENDPOINTS.PRODUCTS}`, {
+    params: { page },
+  });
+
+  return data;
+}
+
+export async function getProductsByCategory(category) {
+  const { data } = await axios.get(
+    `${API_ENDPOINTS.PRODUCTS_BY_CATEGORY}${category}`
+  );
+
+  return data;
+}
+
