@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { API_BASE_URL, API_ENDPOINTS } from './constants';
+import { API_BASE_URL, API_ENDPOINTS, ITEMS_PER_PAGE } from './constants';
 
 axios.defaults.baseURL = API_BASE_URL;
 
@@ -10,9 +10,10 @@ export async function getCategories() {
 }
 
 export async function getProducts(page) {
-  const { data } = await axios.get(`${API_ENDPOINTS.PRODUCTS}`, {
-    params: { page },
-  });
+  const skip = (page - 1) * ITEMS_PER_PAGE;
+  const { data } = await axios.get(
+    `${API_ENDPOINTS.PRODUCTS}?limit=${ITEMS_PER_PAGE}&skip=${skip}`
+  );
 
   return data;
 }
@@ -24,4 +25,3 @@ export async function getProductsByCategory(category) {
 
   return data;
 }
-
